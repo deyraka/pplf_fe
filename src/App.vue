@@ -1,55 +1,65 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
+  <v-app id="inspire">
+    <v-navigation-drawer
+      v-model="drawer"
       dark
+      src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+      app
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            Menu
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            BPS Provinsi Kalimantan Tengah
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-divider></v-divider>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
+      <v-list
+        dense
+        nav
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.to"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Rekap Pra Pemutakhiran SP2020-LF</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
-      <router-view/>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-
   data: () => ({
-    //
+    drawer: null,
+    items: [
+      { title: 'Home', icon: 'mdi-view-dashboard', to: '/' },
+      { title: 'About', icon: 'mdi-help-box', to: '/about' }
+    ]
   })
 }
 </script>
