@@ -7,6 +7,7 @@
                 <v-col
                     v-for="item in items"
                     :key="item.id_kabko"
+                    :loading="loading"
                 >
                     <v-card
                         class="mx-auto my-4"
@@ -34,7 +35,7 @@
                             align="center"
                             justify="end"
                             >
-                                <router-link :to="'/details/'+item.id_kabko">
+                                <router-link :to="'/regency-details/'+item.id_kabko">
                                     <v-btn
                                     depressed
                                     color="primary"
@@ -59,14 +60,18 @@ export default {
   name: 'Regency',
   data () {
     return {
-      items: null
+      items: null,
+      loading: true
     }
   },
   mounted () {
     axios
       .get('http://localhost:8000/kabko')
-      .then(response => { this.items = response.data })
-      .catch(e => { console.log(e) })
+      .then((response) => {
+        this.loading = false
+        this.items = response.data
+      })
+      .catch((e) => { console.log(e) })
   }
 
 }
