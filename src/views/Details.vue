@@ -1,16 +1,28 @@
 <template>
   <div class="about">
     <h4 class="pa-6">Details for Kabupaten {{id}}</h4>
-    <p>Result = {{id_kabko}}</p>
-    <p>ITEMS : {{items}}</p>
-    <template>
+    <v-card
+      class="pa-2 mx-6 mb-6"
+    >
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search ..."
+          single-line
+          hide-details
+        >
+        </v-text-field>
+      </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="items"
+        :items="baskets"
         :items-per-page="10"
+        :loading="loading"
+        :search="search"
         class="elevation-1"
       ></v-data-table>
-    </template>
+    </v-card>
   </div>
 </template>
 
@@ -23,6 +35,8 @@ export default {
   data () {
     return {
       id_kabko: encodeURIComponent(this.id),
+      search: '',
+      loading: true,
       headers: [
         { text: 'Kecamatan', value: 'kec' },
         { text: 'Kelurahan/Desa', value: 'keldes' },
@@ -31,7 +45,12 @@ export default {
         { text: 'Jumlah Regency Approved', value: 'REGENCY_APPROVED' },
         { text: 'Jumlah Open', value: 'OPEN' }
       ],
-      items: null
+      // headers: [
+      //   { text: 'Name', value: 'name' },
+      //   { text: 'Country', value: 'country' },
+      //   { text: 'Website', value: 'website' }
+      // ],
+      baskets: []
       // items: [
       //   {
       //     kec: 'fff',
@@ -47,8 +66,15 @@ export default {
   mounted () {
     axios
       .post('http://localhost:8000/list/' + this.id_kabko)
-      .then(response => { this.items = response.data })
-      .catch(e => { console.log(e) })
+      .then((response) => {
+        this.loading = false
+        this.baskets = response.data
+      })
+      .catch((e) => { console.log(e) })
+    // axios
+    //   .get('https://api.instantwebtools.net/v1/airlines')
+    //   .then((response) => { this.baskets = response.data })
+    //   .catch((e) => { console.log(e) })
   }
 }
 </script>
