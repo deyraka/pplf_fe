@@ -2,7 +2,6 @@
     <div class="pa-6">
         <v-container>
             <v-row
-                :justify="center"
             >
                 <v-col
                     v-for="item in items"
@@ -66,7 +65,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8000/kabko')
+      .get('http://10.62.6.21:8000/kabko')
       .then((response) => {
         this.loading = false
         this.items = response.data

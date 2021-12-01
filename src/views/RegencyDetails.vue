@@ -20,9 +20,29 @@
         :items-per-page="10"
         :loading="loading"
         :search="search"
+        sort-by="calories"
         class="elevation-1"
-      ></v-data-table>
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-btn
+            icon
+            color="primary"
+            :to="'/bs-details/'+item.kec+'/'+item.keldes+'/'+item.kode_bs"
+          >
+              <v-icon
+                small
+                class="ma-2"
+              >
+                mdi-eye
+              </v-icon>
+          </v-btn>
+        </template>
+        <template v-slot:no-data>
+          <p>No Data Found</p>
+        </template>
+      </v-data-table>
     </v-card>
+    <!-- <h5>{{baskets}}</h5> -->
   </div>
 </template>
 
@@ -32,49 +52,35 @@ import axios from 'axios'
 export default {
   name: 'Details',
   props: ['id'],
-  data () {
-    return {
-      id_kabko: encodeURIComponent(this.id),
-      search: '',
-      loading: true,
-      headers: [
-        { text: 'Kecamatan', value: 'kec' },
-        { text: 'Kelurahan/Desa', value: 'keldes' },
-        { text: 'Kode BS', value: 'kode_bs' },
-        { text: 'Jumlah Approved', value: 'APPROVED' },
-        { text: 'Jumlah Regency Approved', value: 'REGENCY_APPROVED' },
-        { text: 'Jumlah Open', value: 'OPEN' }
-      ],
-      // headers: [
-      //   { text: 'Name', value: 'name' },
-      //   { text: 'Country', value: 'country' },
-      //   { text: 'Website', value: 'website' }
-      // ],
-      baskets: []
-      // items: [
-      //   {
-      //     kec: 'fff',
-      //     keldes: 'ggg',
-      //     kode_bs: 'hhh',
-      //     APPROVED: 'JJJ',
-      //     REGENCY_APPROVED: 'KKK',
-      //     OPEN: 'LLL'
-      //   }
-      // ]
-    }
+  data: () => ({
+    search: '',
+    loading: true,
+    headers: [
+      { text: 'Kecamatan', value: 'kec' },
+      { text: 'Kelurahan/Desa', value: 'keldes' },
+      { text: 'Kode BS', value: 'kode_bs' },
+      { text: 'Jumlah Approved', value: 'APPROVED' },
+      { text: 'Jumlah Regency Approved', value: 'REGENCY_APPROVED' },
+      { text: 'Jumlah Open', value: 'OPEN' },
+      { text: 'Actions', value: 'actions', sortable: false }
+    ],
+    baskets: []
+  }),
+
+  created () {
+    this.initialize()
   },
-  mounted () {
-    axios
-      .post('http://localhost:8000/list/' + this.id_kabko)
-      .then((response) => {
-        this.loading = false
-        this.baskets = response.data
-      })
-      .catch((e) => { console.log(e) })
-    // axios
-    //   .get('https://api.instantwebtools.net/v1/airlines')
-    //   .then((response) => { this.baskets = response.data })
-    //   .catch((e) => { console.log(e) })
+
+  methods: {
+    initialize () {
+      axios
+        .post('http://10.62.6.21:8000/list/' + encodeURIComponent(this.id))
+        .then((response) => {
+          this.loading = false
+          this.baskets = response.data
+        })
+        .catch((e) => { console.log(e) })
+    }
   }
 }
 </script>
