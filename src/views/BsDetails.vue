@@ -23,7 +23,16 @@
         :loading="loading"
         :search="search"
         class="elevation-1"
-      ></v-data-table>
+      >
+        <template v-slot:item.status="{ item }">
+          <v-chip
+            :color="getColor(item.status)"
+            dark
+          >
+            {{ item.status }}
+          </v-chip>
+        </template>
+      </v-data-table>
     </v-card>
   </div>
 </template>
@@ -66,7 +75,7 @@ export default {
   },
   mounted () {
     axios
-      .post('http://10.62.6.21:8000/detailbs/' + this.bs)
+      .post('http://localhost/pplf_api/public/detailbs/' + this.bs)
       .then((response) => {
         this.loading = false
         this.baskets = response.data
@@ -76,6 +85,15 @@ export default {
     //   .get('https://api.instantwebtools.net/v1/airlines')
     //   .then((response) => { this.baskets = response.data })
     //   .catch((e) => { console.log(e) })
+  },
+
+  methods: {
+    getColor (stts) {
+      if (stts === 'APPROVED') return 'green'
+      else if (stts === 'REGENCY APPROVED') return 'orange'
+      else if (stts === 'OPEN') return 'grey'
+      else return 'red'
+    }
   }
 }
 </script>

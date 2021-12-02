@@ -23,6 +23,25 @@
         sort-by="calories"
         class="elevation-1"
       >
+        <template v-slot:item.kode_bs="{ item }">
+          <v-chip
+            :color="getColor(item.APPROVED, item.REGENCY_APPROVED)"
+            dark
+          >
+            {{ item.kode_bs }}
+          </v-chip>
+        </template>
+        <template v-slot:item.REJECTED="{ item }">
+          <div v-if="item.REJECTED > 0">
+            <v-chip
+              :color="getColorReject(item.REJECTED)"
+              dark
+            >
+              {{ item.REJECTED }}
+            </v-chip>
+          </div>
+          <div v-else>{{ item.REJECTED }}</div>
+        </template>
         <template v-slot:item.actions="{ item }">
           <v-btn
             icon
@@ -32,6 +51,7 @@
               <v-icon
                 small
                 class="ma-2"
+                title="Lihat Selengkapnya"
               >
                 mdi-eye
               </v-icon>
@@ -59,9 +79,10 @@ export default {
       { text: 'Kecamatan', value: 'kec' },
       { text: 'Kelurahan/Desa', value: 'keldes' },
       { text: 'Kode BS', value: 'kode_bs' },
-      { text: 'Jumlah Approved', value: 'APPROVED' },
-      { text: 'Jumlah Regency Approved', value: 'REGENCY_APPROVED' },
-      { text: 'Jumlah Open', value: 'OPEN' },
+      { text: 'Status Approved', value: 'APPROVED' },
+      { text: 'Status Regency Approved', value: 'REGENCY_APPROVED' },
+      { text: 'Status Rejected', value: 'REJECTED' },
+      { text: 'Status Open', value: 'OPEN' },
       { text: 'Actions', value: 'actions', sortable: false }
     ],
     baskets: []
@@ -74,12 +95,22 @@ export default {
   methods: {
     initialize () {
       axios
-        .post('http://10.62.6.21:8000/list/' + encodeURIComponent(this.id))
+        // .post('http://10.62.6.21:8000/list/' + encodeURIComponent(this.id))
+        .post('http://localhost/pplf_api/public/list/' + encodeURIComponent(this.id))
         .then((response) => {
           this.loading = false
           this.baskets = response.data
         })
         .catch((e) => { console.log(e) })
+    },
+    getColor (approved, regapproved) {
+      if (approved === 0 && regapproved === 0) return 'grey'
+      else if (approved === 0 && regapproved > 0) return 'orange'
+      else return 'green'
+    },
+    getColorReject (val) {
+      if (val > 0) return 'red'
+      else return 'transparent'
     }
   }
 }

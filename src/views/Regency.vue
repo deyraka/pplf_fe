@@ -65,7 +65,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://10.62.6.21:8000/kabko')
+      .get('http://localhost/pplf_api/public/kabko')
       .then((response) => {
         this.loading = false
         this.items = response.data
