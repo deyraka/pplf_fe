@@ -95,8 +95,8 @@ export default {
   methods: {
     initialize () {
       axios
-        // .post('http://10.62.6.21:8000/list/' + encodeURIComponent(this.id))
-        .post('http://localhost/pplf_api/public/list/' + encodeURIComponent(this.id))
+        .post('https://ics62-api.bpskalteng.web.id/list/' + encodeURIComponent(this.id))
+        // .post('http://localhost/pplf_api/public/list/' + encodeURIComponent(this.id))
         .then((response) => {
           this.loading = false
           this.baskets = response.data

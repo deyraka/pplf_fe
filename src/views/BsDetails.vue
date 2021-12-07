@@ -75,7 +75,8 @@ export default {
   },
   mounted () {
     axios
-      .post('http://localhost/pplf_api/public/detailbs/' + this.bs)
+      .post('https://ics62-api.bpskalteng.web.id/detailbs/' + this.bs)
+      // .post('http://localhost/pplf_api/public/detailbs/' + this.bs)
       .then((response) => {
         this.loading = false
         this.baskets = response.data

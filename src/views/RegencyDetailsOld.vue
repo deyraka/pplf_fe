@@ -76,7 +76,8 @@ export default {
   },
   mounted () {
     axios
-      .post('http://10.62.6.21:8000/list/' + this.id_kabko)
+      .post('https://ics62-api.bpskalteng.web.id/list/' + this.id_kabko)
+      // .post('http://10.62.6.21:8000/list/' + this.id_kabko)
       .then((response) => {
         this.loading = false
         this.baskets = response.data

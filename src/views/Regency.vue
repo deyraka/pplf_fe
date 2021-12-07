@@ -9,7 +9,7 @@
                     :loading="loading"
                 >
                     <v-card
-                        class="mx-auto my-4"
+                        class="mx-auto pa-2"
                         color="#26c6da"
                         dark
                         max-width="400"
@@ -65,7 +65,8 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost/pplf_api/public/kabko')
+      .get('https://ics62-api.bpskalteng.web.id/kabko')
+    //   .get('http://localhost/pplf_api/public/kabko')
       .then((response) => {
         this.loading = false
         this.items = response.data
