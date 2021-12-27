@@ -13,6 +13,26 @@
           hide-details
         >
         </v-text-field>
+        <v-spacer></v-spacer>
+        <download-excel
+          :data="json_data"
+          :fields="json_fields"
+          worksheet="My Worksheet"
+          :header="getTitle(id)"
+          :name="getFileName(id)"
+        >
+          <v-btn
+            icon
+            color="success"
+            fab outlined small
+          >
+            <v-icon
+              title="Export to Excel"
+            >
+              mdi-file-excel
+            </v-icon>
+          </v-btn>
+        </download-excel>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -68,9 +88,11 @@
 
 <script>
 import axios from 'axios'
+// import JsonExcel from 'vue-json-excel'
 
 export default {
   name: 'Details',
+  // components: JsonExcel,
   props: ['id'],
   data: () => ({
     search: '',
@@ -85,7 +107,28 @@ export default {
       { text: 'Status Open', value: 'OPEN' },
       { text: 'Actions', value: 'actions', sortable: false }
     ],
-    baskets: []
+    baskets: [],
+    json_fields: {
+      Kecamatan: 'kec',
+      'Kelurahan/Desa': 'keldes',
+      'Kode BS': 'kode_bs',
+      'Status Approved': 'APPROVED',
+      'Status Regency Approved': 'REGENCY_APPROVED',
+      'Status Rejected': 'REJECTED',
+      'Status Open': 'OPEN'
+    },
+    json_data: []
+    // json_data: [
+    //   {
+    //     kec: 'aaa',
+    //     keldes: 'bbb',
+    //     kode_bs: 'ccc',
+    //     APPROVED: 10,
+    //     REGENCY_APPROVED: 5,
+    //     REJECTED: 1,
+    //     OPEN: 2
+    //   }
+    // ]
   }),
 
   created () {
@@ -100,6 +143,7 @@ export default {
         .then((response) => {
           this.loading = false
           this.baskets = response.data
+          this.json_data = response.data
         })
         .catch((e) => { console.log(e) })
     },
@@ -111,6 +155,12 @@ export default {
     getColorReject (val) {
       if (val > 0) return 'red'
       else return 'transparent'
+    },
+    getFileName (val) {
+      return 'Data PPLF - ' + this.id
+    },
+    getTitle (val) {
+      return 'Rekap Hasil Pra Pemutakhiran SP2020-LF Kabupaten ' + this.id
     }
   }
 }
